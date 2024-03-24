@@ -16,7 +16,7 @@
 		BF6B986F2BAF731A00F17A14 /* RecipesBookUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6B986E2BAF731A00F17A14 /* RecipesBookUITests.swift */; };
 		BF6B98712BAF731A00F17A14 /* RecipesBookUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6B98702BAF731A00F17A14 /* RecipesBookUITestsLaunchTests.swift */; };
 		BF6B987F2BAF78BB00F17A14 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6B987E2BAF78BB00F17A14 /* Recipe.swift */; };
-		BF6B98832BAF7DF500F17A14 /* RecipeslTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6B98822BAF7DF500F17A14 /* RecipeslTableViewController.swift */; };
+		BF6B98832BAF7DF500F17A14 /* RecipesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6B98822BAF7DF500F17A14 /* RecipesTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,7 +50,7 @@
 		BF6B986E2BAF731A00F17A14 /* RecipesBookUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesBookUITests.swift; sourceTree = "<group>"; };
 		BF6B98702BAF731A00F17A14 /* RecipesBookUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesBookUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		BF6B987E2BAF78BB00F17A14 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
-		BF6B98822BAF7DF500F17A14 /* RecipeslTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeslTableViewController.swift; sourceTree = "<group>"; };
+		BF6B98822BAF7DF500F17A14 /* RecipesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,7 +139,7 @@
 		BF6B98802BAF79B700F17A14 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				BF6B98822BAF7DF500F17A14 /* RecipeslTableViewController.swift */,
+				BF6B98822BAF7DF500F17A14 /* RecipesTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -287,7 +287,7 @@
 			files = (
 				BF6B984E2BAF731800F17A14 /* AppDelegate.swift in Sources */,
 				BF6B98502BAF731800F17A14 /* SceneDelegate.swift in Sources */,
-				BF6B98832BAF7DF500F17A14 /* RecipeslTableViewController.swift in Sources */,
+				BF6B98832BAF7DF500F17A14 /* RecipesTableViewController.swift in Sources */,
 				BF6B987F2BAF78BB00F17A14 /* Recipe.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

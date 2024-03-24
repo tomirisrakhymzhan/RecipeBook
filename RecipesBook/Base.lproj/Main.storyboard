@@ -3,18 +3,17 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Recipesl Table View Controller-->
+        <!--Recipes Table View Controller-->
         <scene sceneID="oqX-PV-XBX">
             <objects>
-                <tableViewController id="cVr-rz-iXe" customClass="RecipeslTableViewController" customModule="RecipesBook" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="cVr-rz-iXe" customClass="RecipesTableViewController" customModule="RecipesBook" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="dF9-GH-2HB">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.78039215689999997" green="0.86274509799999999" blue="0.65490196079999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="sectionIndexBackgroundColor" red="0.53725490196078429" green="0.72549019607843135" blue="0.67843137254901964" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RecipeCell" rowHeight="117" id="Yhu-Mg-IA4">
@@ -59,7 +58,26 @@
                             <outlet property="delegate" destination="cVr-rz-iXe" id="B8h-HT-1Y3"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Wlm-s1-HWW"/>
+                    <navigationItem key="navigationItem" id="Wlm-s1-HWW">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="SKy-sN-t1N">
+                            <rect key="frame" x="16" y="5.6666666666666679" width="361" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="1" green="0.92156862750000001" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <segments>
+                                <segment title="Soups"/>
+                                <segment title="Salads"/>
+                                <segment title="Main"/>
+                                <segment title="Desserts"/>
+                                <segment title="Drinks"/>
+                            </segments>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="selectedSegmentTintColor" red="0.98823529409999999" green="0.50588235290000005" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </segmentedControl>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="segmentedControl" destination="SKy-sN-t1N" id="Hx5-J1-5Tk"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Etj-3u-LXu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -86,8 +104,5 @@
     </scenes>
     <resources>
         <image name="logo" width="1024" height="1024"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>
