@@ -14,21 +14,8 @@ struct Recipe {
     let description: String
 }
 
-struct RecipeCategoryList{
-    let category: String
-    let list: [Recipe]
-}
-
 // Data source of recipes
 extension Recipe {
-    static let sampleData : [RecipeCategoryList] = [
-        RecipeCategoryList(category: "Soup", list: soups),
-        RecipeCategoryList(category: "Salads", list: salads),
-        RecipeCategoryList(category: "Main dishes", list: mainDishes),
-        RecipeCategoryList(category: "Desserts", list: desserts),
-        RecipeCategoryList(category: "Drinks", list: drinks)
-    
-    ]
     static let soups: [Recipe] = [
         Recipe(name: "Tomato Soup",
                cookingTime: "30 minutes",
@@ -101,7 +88,7 @@ extension Recipe {
              difficulty: "Easy",
              ingredients: ["Salmon Fillets", "Lemon", "Olive Oil", "Garlic", "Dill", "Salt", "Pepper"],
              description: "Fresh salmon fillets seasoned with garlic, dill, and lemon, grilled to perfection."),
-Recipe(name: "Vegetable Lasagna",
+        Recipe(name: "Vegetable Lasagna",
              cookingTime: "1 hour",
              difficulty: "Medium",
              ingredients: ["Lasagna Noodles", "Marinara Sauce", "Zucchini", "Yellow Squash", "Spinach", "Ricotta Cheese", "Mozzarella Cheese", "Parmesan Cheese"],
@@ -142,5 +129,5 @@ Recipe(name: "Vegetable Lasagna",
               difficulty: "Easy",
               ingredients: ["Fresh Mint Leaves", "Lime", "Simple Syrup", "Club Soda", "Ice"],
               description: "A refreshing mocktail version of the classic Mojito, made with fresh mint, lime, and soda water, served over ice."),
-]
+    ]
 }

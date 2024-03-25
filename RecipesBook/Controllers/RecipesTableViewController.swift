@@ -23,7 +23,6 @@ class RecipesTableViewController: UITableViewController {
             tableView.reloadData()
         }
     }
-
     
     enum SegmentTitle: String {
         case soups = "Soups"
@@ -33,6 +32,12 @@ class RecipesTableViewController: UITableViewController {
         case drinks = "Drinks"
     }
     
+    var soups = Recipe.soups
+    var salads = Recipe.salads
+    var main = Recipe.mainDishes
+    var desserts = Recipe.desserts
+    var drinks = Recipe.drinks
+
     var currentSegmentTitle: SegmentTitle {
         return SegmentTitle(rawValue: segmentedControl.titleForSegment(at: segmentedControl.selectedSegmentIndex) ?? "") ?? .soups
     }
@@ -42,13 +47,37 @@ class RecipesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = 120
+        setupHeaderView()
         loadRecipes(forSegmentTitle: currentSegmentTitle)
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    func setupHeaderView() {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 50))
+        headerView.backgroundColor = .lightGray
+        
+        let button = UIButton(type: .system)
+        button.setTitle("Add Recipe", for: .normal)
+        button.addTarget(self, action: #selector(addRecipeButtonTapped), for: .touchUpInside)
+        button.frame = CGRect(x: 20, y: 10, width: headerView.bounds.width - 40, height: 30)
+        button.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        headerView.addSubview(button)
+        tableView.tableHeaderView = headerView
+    }
+    
+    @objc func addRecipeButtonTapped() {
+        // Handle button tap action
+        // For example, navigate to a view controller to add a new recipe
     }
 
     // MARK: - Table view data source
@@ -62,20 +91,23 @@ class RecipesTableViewController: UITableViewController {
      func loadRecipes(forSegmentTitle segmentTitle: SegmentTitle) {
         switch segmentTitle {
             case .soups:
-                dataSource = groupRecipesByFirstLetter(recipes: Recipe.sampleData[0].list)
+                dataSource = groupRecipesByFirstLetter(recipes: soups)
             case .salads:
-                dataSource = groupRecipesByFirstLetter(recipes: Recipe.sampleData[1].list)
+                dataSource = groupRecipesByFirstLetter(recipes: salads)
             case .main:
-                dataSource = groupRecipesByFirstLetter(recipes: Recipe.sampleData[2].list)
+                dataSource = groupRecipesByFirstLetter(recipes: main)
             case .desserts:
-                dataSource = groupRecipesByFirstLetter(recipes: Recipe.sampleData[3].list)
+                dataSource = groupRecipesByFirstLetter(recipes: desserts)
             case .drinks:
-                dataSource = groupRecipesByFirstLetter(recipes: Recipe.sampleData[4].list)
+                dataSource = groupRecipesByFirstLetter(recipes: drinks)
         }
+        tableView.refreshControl?.endRefreshing()
+
     }
     
     func groupRecipesByFirstLetter(recipes: [Recipe]) -> [Character: [Recipe]] {
         var result : [Character: [Recipe]] = [:]
+        // Group by first letter of recipe name
         for recipe in recipes{
             guard let firstLetter = recipe.name.first else { return [:] }
             if result[firstLetter] != nil {
@@ -87,7 +119,7 @@ class RecipesTableViewController: UITableViewController {
         // Sort section titles alphabetically
         sectionTitles = result.keys.sorted()
         // Sort recipes within each section alphabetically
-        for (key, value) in result {
+        for key in result.keys {
             result[key] = result[key]?.sorted(by: {$0.name < $1.name})
         }
         
@@ -106,14 +138,14 @@ class RecipesTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let sectionKey = sectionTitles[section]
+        let sectionKey =  sectionTitles[section]
         return String(sectionKey)
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath)
-        let sectionKey = sectionTitles[indexPath.section]
+        let sectionKey =  sectionTitles[indexPath.section]
         // Configure the cell...
         let recipeNameLabel = cell.viewWithTag(1000) as! UILabel
         let cookingTimeLabel = cell.viewWithTag(1001) as! UILabel
@@ -131,15 +163,27 @@ class RecipesTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let detailVC = storyboard?.instantiateViewController(identifier: "detailVC") as! ViewController
+        let sectionKey =  sectionTitles[indexPath.section]
+        detailVC.name = dataSource[sectionKey]?[indexPath.row].name ?? ""
+        detailVC.cookingTime = dataSource[sectionKey]?[indexPath.row].cookingTime ?? ""
+        detailVC.difficulty = dataSource[sectionKey]?[indexPath.row].difficulty ?? ""
+        detailVC.ingridients = dataSource[sectionKey]?[indexPath.row].ingredients ?? []
+        detailVC.recipeDescription = dataSource[sectionKey]?[indexPath.row].description ?? ""
+
+        navigationController?.show(detailVC, sender: self)
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let sectionKey = Array(dataSource.keys)[indexPath.section]
+            let sectionKey = sectionTitles[indexPath.section]
             if var recipesForLetter = dataSource[sectionKey] {
                 recipesForLetter.remove(at: indexPath.row)
                 dataSource[sectionKey] = recipesForLetter
-                tableView.deleteRows(at: [indexPath], with: .fade)
+                if recipesForLetter.isEmpty {
+                    dataSource.removeValue(forKey: sectionKey)
+                    sectionTitles = dataSource.keys.sorted()
+                }
             }
         }
     }
