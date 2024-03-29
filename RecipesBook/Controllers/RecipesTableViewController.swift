@@ -47,7 +47,9 @@ class RecipesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = 120
-        setupHeaderView()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(addRecipeButtonTapped))
+
+        
         loadRecipes(forSegmentTitle: currentSegmentTitle)
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
         let refreshControl = UIRefreshControl()
@@ -61,26 +63,30 @@ class RecipesTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
-    func setupHeaderView() {
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 50))
-        headerView.backgroundColor = .lightGray
-        
-        let button = UIButton(type: .system)
-        button.setTitle("Add Recipe", for: .normal)
-        button.addTarget(self, action: #selector(addRecipeButtonTapped), for: .touchUpInside)
-        button.frame = CGRect(x: 20, y: 10, width: headerView.bounds.width - 40, height: 30)
-        button.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
-        headerView.addSubview(button)
-        tableView.tableHeaderView = headerView
-    }
+    
     
     @objc func addRecipeButtonTapped() {
-        // Handle button tap action
-        // For example, navigate to a view controller to add a new recipe
+        // Create a new recipe
+        let newRecipe = Recipe(name: "New Recipe", cookingTime: "15 minutes", difficulty: "Easy", ingredients: ["Ingredient 1", "Ingredient 2"], description: "Description for new recipe")
+        switch currentSegmentTitle {
+        case .soups:
+            soups.append(newRecipe)
+            dataSource = groupRecipesByFirstLetter(recipes: soups)
+        case .salads:
+            salads.append(newRecipe)
+            dataSource = groupRecipesByFirstLetter(recipes: salads)
+        case .main:
+            main.append(newRecipe)
+            dataSource = groupRecipesByFirstLetter(recipes: main)
+        case .desserts:
+            desserts.append(newRecipe)
+            dataSource = groupRecipesByFirstLetter(recipes: desserts)
+        case .drinks:
+            drinks.append(newRecipe)
+            dataSource = groupRecipesByFirstLetter(recipes: drinks)
+        }
+        
     }
-
-    // MARK: - Table view data source
 
     @objc
     func segmentedControlValueChanged(){
@@ -176,17 +182,45 @@ class RecipesTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let sectionKey = sectionTitles[indexPath.section]
-            if var recipesForLetter = dataSource[sectionKey] {
-                recipesForLetter.remove(at: indexPath.row)
-                dataSource[sectionKey] = recipesForLetter
-                if recipesForLetter.isEmpty {
-                    dataSource.removeValue(forKey: sectionKey)
-                    sectionTitles = dataSource.keys.sorted()
-                }
+            switch currentSegmentTitle {
+            case .soups:
+                deleteRecipe(from: &soups, at: indexPath)
+            case .salads:
+                deleteRecipe(from: &salads, at: indexPath)
+            case .main:
+                deleteRecipe(from: &main, at: indexPath)
+            case .desserts:
+                deleteRecipe(from: &desserts, at: indexPath)
+            case .drinks:
+                deleteRecipe(from: &drinks, at: indexPath)
+            }
+            
+        }
+    }
+    
+
+    func deleteRecipe(from recipes: inout [Recipe], at indexPath: IndexPath) {
+        let sectionKey = sectionTitles[indexPath.section]
+        if var recipesForLetter = dataSource[sectionKey] {
+            let name = recipesForLetter[indexPath.row].name
+            recipesForLetter.remove(at: indexPath.row) // Remove from dataSource
+            dataSource[sectionKey] = recipesForLetter
+
+            if let index = recipes.firstIndex(where: { $0.name == name }) {
+                recipes.remove(at: index) // Remove from main array
+                print("\(name) removed from the array")
+            } else {
+                print("\(name) not found in the array")
+            }
+
+            if recipesForLetter.isEmpty {
+                dataSource.removeValue(forKey: sectionKey)
+                sectionTitles = dataSource.keys.sorted()
             }
         }
     }
+    
+    
 
     
     
